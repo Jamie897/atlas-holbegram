@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:holbegram/widgets/text_field.dart';
+import 'package:holbegram/screens/signup_screen.dart'; // Import SignUp
 
 class LoginScreen extends StatefulWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final bool _passwordVisible;
-
-  LoginScreen({
-    required this.emailController,
-    required this.passwordController,
-    this._passwordVisible = true,
-  });
+  const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = true;
+
   @override
   void initState() {
     super.initState();
@@ -26,8 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // Dispose of controllers
-    widget.emailController.dispose();
-    widget.passwordController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -39,8 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 28),
-            Text(
+            const SizedBox(height: 28),
+            const Text(
               'Holbegram',
               style: TextStyle(fontFamily: 'Billabong', fontSize: 50),
             ),
@@ -53,45 +51,45 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  SizedBox(height: 28),
+                  const SizedBox(height: 28),
                   TextFieldInput(
-                    controller: widget.emailController,
+                    controller: emailController,
                     isPassword: false,
                     hintText: 'Email',
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   TextFieldInput(
-                    controller: widget.passwordController,
-                    isPassword: !widget._passwordVisible,
+                    controller: passwordController,
+                    isPassword: !_passwordVisible,
                     hintText: 'Password',
-                    keyboardType: TextInputType.visiblePassword,
                     suffixIcon: IconButton(
                       alignment: Alignment.bottomLeft,
-                      icon: widget._passwordVisible
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off),
+                      icon: _passwordVisible
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
                       onPressed: () {
                         setState(() {
-                          widget._passwordVisible = !widget._passwordVisible;
+                          _passwordVisible = !_passwordVisible;
                         });
                       },
                     ),
+                    keyboardType: TextInputType.visiblePassword,
                   ),
-                  SizedBox(height: 28),
+                  const SizedBox(height: 28),
                   SizedBox(
                     height: 48,
                     width: double.infinity,
                     child: ElevatedButton(
+                      onPressed: () async {
+                        // Implement login logic
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                           Color.fromARGB(218, 226, 37, 24),
                         ),
                       ),
-                      onPressed: () async {
-                        // Implement login logic here
-                      },
-                      child: Text(
+                      child: const Text(
                         'Log in',
                         style: TextStyle(
                           color: Colors.white,
@@ -99,8 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 24),
-                  Row(
+                  const SizedBox(height: 24),
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Forgot your login details? '),
@@ -114,19 +112,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     flex: 0,
                     child: Container(),
                   ),
-                  SizedBox(height: 24),
-                  Divider(thickness: 2),
+                  const SizedBox(height: 24),
+                  const Divider(thickness: 2),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account"),
+                        const Text("Don't have an account"),
                         TextButton(
                           onPressed: () {
-                            // Navigate to sign up screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUp(
+                                emailController: TextEditingController(),
+                                usernameController: TextEditingController(),
+                                passwordController: TextEditingController(),
+                                passwordConfirmController: TextEditingController(),
+                              )),
+                            );
                           },
-                          child: Text(
+                          child: const Text(
                             'Sign up',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -137,15 +143,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
+                  const SizedBox(height: 10),
+                  const Row(
                     children: [
                       Flexible(child: Divider(thickness: 2)),
                       Text(" OR "),
                       Flexible(child: Divider(thickness: 2)),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 40,
                         height: 40,
                       ),
-                      Text("Sign in with Google"),
+                      const Text("Sign in with Google"),
                     ],
                   ),
                 ],
