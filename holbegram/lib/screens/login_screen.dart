@@ -150,11 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/google_logo.png',
+                      Image.network(
+                        'https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png',
                         width: 40,
                         height: 40,
-                      
+                      ),
                       Text("Sign in with Google"),
                     ],
                   ),
