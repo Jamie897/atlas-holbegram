@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:holbegram/methods/auth_methods.dart';
 import 'package:holbegram/screens/auth/login_screen.dart';
 import 'package:holbegram/screens/auth/upload_image_screen.dart';
-import 'package:holbegram/widgets/text_field.dart';
+import 'package:holbegram/widgets/text_field_input.dart';
 
 class SignUp extends StatefulWidget {
   final TextEditingController emailController;
@@ -12,7 +11,7 @@ class SignUp extends StatefulWidget {
   final TextEditingController passwordConfirmController;
   bool _passwordVisible;
 
-  const SignUp({
+  SignUp({
     required this.emailController,
     required this.usernameController,
     required this.passwordController,
@@ -21,7 +20,6 @@ class SignUp extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _SignUpState createState() => _SignUpState();
 }
 
@@ -115,7 +113,17 @@ class _SignUpState extends State<SignUp> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement sign up logic
+                    // Navigate to UploadImageScreen and pass data
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UploadImageScreen(
+                          email: widget.emailController.text.trim(),
+                          username: widget.usernameController.text.trim(),
+                          password: widget.passwordController.text.trim(),
+                        ),
+                      ),
+                    );
                   },
                   child: const Text('Sign Up'),
                 ),
@@ -129,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
                       );
                     },
                     child: Text(
