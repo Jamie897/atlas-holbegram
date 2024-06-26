@@ -1,14 +1,15 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:holbegram/providers/user_provider.dart';
-import 'package:holbegram/screens/home.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'methods/post_storage.dart';
+import '../providers/user_provider.dart';
+import '../screens/home.dart';
+import '../methods/post_storage.dart';
 
 class AddImage extends StatefulWidget {
-  const AddImage({super.key});
+  const AddImage({Key? key}) : super(key: key);
 
   @override
   State<AddImage> createState() => _AddImageState();
@@ -17,8 +18,6 @@ class AddImage extends StatefulWidget {
 class _AddImageState extends State<AddImage> {
   final TextEditingController captionController = TextEditingController();
   Uint8List? _image;
-
- 
 
   Future<void> _selectImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -80,21 +79,38 @@ class _AddImageState extends State<AddImage> {
         actions: [
           Center(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextButton(
                 onPressed: () async {
+                  if (_image == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select an image.'),
+                      ),
+                    );
+                    return;
+                  }
+
                   final String res = await PostStorage().uploadPost(
-                      captionController.text,
-                      userProvider.user!.uid,
-                      userProvider.user!.username,
-                      userProvider.user!.photoUrl,
-                      _image!);
+                    captionController.text,
+                    userProvider.user!.uid,
+                    userProvider.user!.username,
+                    userProvider.user!.photoUrl,
+                    _image!,
+                  );
+                  
                   if (res == "Ok") {
                     userProvider.refreshUser();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => Home()),
-                      ((route) => false),
+                      (route) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to upload post: $res'),
+                      ),
                     );
                   }
                 },
@@ -114,25 +130,19 @@ class _AddImageState extends State<AddImage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           const Text(
             "Add Image",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           const Text(
             "Choose an image from your gallery or take a one.",
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           TextField(
             controller: captionController,
             decoration: const InputDecoration(
@@ -142,14 +152,11 @@ class _AddImageState extends State<AddImage> {
               hintText: "Write a caption...",
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           GestureDetector(
             onTap: () {
               _showImageSelectionDialog(context);
             },
-            //selectImageFromGallery,
             child: _image == null
                 ? Image.asset(
                     "assets/images/add-image.webp",
@@ -162,10 +169,11 @@ class _AddImageState extends State<AddImage> {
                     decoration: BoxDecoration(
                       // shape: BoxShape.circle,
                       image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: MemoryImage(_image!) // XFileImage(_image!),
-                          ),
-                    )),
+                        fit: BoxFit.cover,
+                        image: MemoryImage(_image!), // XFileImage(_image!),
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
