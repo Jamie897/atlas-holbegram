@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:holbegram/methods/auth_methods.dart';
+import 'package:holbegram/screens/auth/login_screen.dart';
+import 'package:holbegram/screens/auth/upload_image_screen.dart';
 import 'package:holbegram/widgets/text_field.dart';
-import 'package:holbegram/screens/login_screen.dart'; // Import LoginScreen
 
 class SignUp extends StatefulWidget {
   final TextEditingController emailController;
