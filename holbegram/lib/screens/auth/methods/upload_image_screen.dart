@@ -68,7 +68,7 @@ class _AddPictureState extends State<AddPicture> {
                 style: TextStyle(fontFamily: 'Billabong', fontSize: 50),
               ),
               Image.asset(
-                'assets/images/img.png',
+                'assets/images/Sample_User_Icon.png',
                 width: 80,
                 height: 60,
               ),
