@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:holbegram/screens/auth/methods/user_storage.dart';
 
@@ -9,7 +8,8 @@ class PostStorage {
 
   Future<String> uploadPost(String caption, String uid, String username, String profImage, Uint8List image) async {
     try {
-      String imageUrl = await _userStorage.uploadImageToStorage(image); // Assuming this method exists in UserStorage
+      String imageUrl = await _userStorage.uploadImageToStorage(image);
+
       await _firestore.collection('posts').add({
         'caption': caption,
         'uid': uid,
@@ -19,8 +19,10 @@ class PostStorage {
         'datePublished': DateTime.now(),
         'likes': [], // Assuming initial likes is empty list
       });
+
       return 'Ok';
     } catch (e) {
+      print('Error uploading post: $e');
       return e.toString();
     }
   }
@@ -30,6 +32,7 @@ class PostStorage {
       await _firestore.collection('posts').doc(postId).delete();
     } catch (e) {
       print('Error deleting post: $e');
+      throw Exception('Failed to delete post');
     }
   }
 }
