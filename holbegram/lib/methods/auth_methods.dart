@@ -60,4 +60,20 @@ class AuthMethods {
       return e.toString();
     }
   }
+
+  Future<Userd> getUserDetails() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot snapshot =
+            await _firestore.collection('users').doc(currentUser.uid).get();
+        return Userd.fromSnap(snapshot);
+      } else {
+        throw 'User not authenticated';
+      }
+    } catch (e) {
+      throw 'Failed to get user details: $e';
+    }
+  }
 }
+
